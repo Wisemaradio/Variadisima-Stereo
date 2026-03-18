@@ -10,7 +10,7 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background: linear-gradient(135deg, #141e30, #243b55);
       color: white;
       display: flex;
       justify-content: center;
@@ -43,24 +43,17 @@
     button {
       background: #00ffcc;
       border: none;
-      padding: 15px 30px;
+      padding: 15px;
       border-radius: 30px;
       font-size: 16px;
       cursor: pointer;
       color: #000;
-      margin-top: 15px;
-      transition: 0.3s;
       width: 100%;
+      transition: 0.3s;
     }
 
     button:hover {
       background: #00ccaa;
-    }
-
-    .footer {
-      margin-top: 15px;
-      font-size: 14px;
-      opacity: 0.8;
     }
   </style>
 
@@ -74,37 +67,15 @@
 ```
 <div class="status">🟢 En Vivo</div>
 
-<!-- AUDIO STREAM -->
-<audio id="radio" preload="none">
-  <source src="https://corsproxy.io/?http://190.60.35.218:8000/radio.mp3" type="audio/mpeg">
-  Tu navegador no soporta audio.
-</audio>
-
-<!-- BOTÓN -->
-<button onclick="togglePlay()" id="btn">▶️ Escuchar</button>
-
-<div class="footer">La Radio De La Gente</div>
+<button onclick="playRadio()">▶️ Escuchar</button>
 ```
 
   </div>
 
   <script>
-    const radio = document.getElementById("radio");
-    const btn = document.getElementById("btn");
-
-    function togglePlay() {
-      if (radio.paused) {
-        radio.play()
-          .then(() => {
-            btn.innerHTML = "⏸️ Pausar";
-          })
-          .catch(() => {
-            alert("Debes interactuar primero con la página para reproducir el audio");
-          });
-      } else {
-        radio.pause();
-        btn.innerHTML = "▶️ Escuchar";
-      }
+    function playRadio() {
+      const audio = new Audio("https://api.allorigins.win/raw?url=http://190.60.35.218:8000/radio.mp3");
+      audio.play();
     }
   </script>
 
