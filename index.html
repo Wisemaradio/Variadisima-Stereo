@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Variadisima Stereo On Line</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+    text-align: center;
+}
+
+.container {
+    padding: 40px 20px;
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.status {
+    margin: 20px 0;
+    font-size: 18px;
+    color: #00ffcc;
+}
+
+button {
+    background: #00ffcc;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    color: #000;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #00ccaa;
+}
+
+.metadata {
+    margin-top: 30px;
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+.footer {
+    margin-top: 40px;
+    font-size: 14px;
+    opacity: 0.6;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎧 Variadisima Stereo On Line</h1>
+
+<div class="status" id="status">🔴 Detenido</div>
+
+<button id="playBtn">▶️ Play</button>
+
+<div class="metadata" id="metadata">
+Cargando información...
+</div>
+
+<div class="footer">
+La Radio De La Gente
+</div>
+
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+
+// STREAM CON PROXY (SOLUCION HTTPS)
+const streamURL = "https://corsproxy.io/?http://190.60.35.218:8000/radio.mp3";
+
+const audio = document.getElementById("audio");
+const btn = document.getElementById("playBtn");
+const status = document.getElementById("status");
+const metadataDiv = document.getElementById("metadata");
+
+let playing = false;
+
+btn.addEventListener("click", () => {
+    if (!playing) {
+        audio.src = streamURL;
+        audio.play();
+        btn.innerHTML = "⏸️ Pause";
+        status.innerHTML = "🟢 En Vivo";
+        playing = true;
+    } else {
+        audio.pause();
+        btn.innerHTML = "▶️ Play";
+        status.innerHTML = "🔴 Detenido";
+        playing = false;
+    }
+});
+
+// METADATOS ICECAST
+async function getMetadata() {
+    try {
+        let url = "http://190.60.35.218:8000/status-json.xsl";
+        let response = await fetch(url);
+        let data = await response.json();
+
+        let source = data.icestats.source;
+
+        let title = source.title || "En vivo";
+        metadataDiv.innerHTML = "🎵 " + title;
+
+    } catch (error) {
+        metadataDiv.innerHTML = "🎵 En vivo";
+    }
+}
+
+// actualizar cada 10 segundos
+setInterval(getMetadata, 10000);
+getMetadata();
+
+</script>
+
+</body>
+</html>
