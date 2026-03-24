@@ -26,7 +26,6 @@ body {
     backdrop-filter: blur(10px);
 }
 
-/* 🔥 LOGO AJUSTADO SIN RECORTE */
 .logo {
     width: 170px;
     height: 170px;
@@ -93,7 +92,6 @@ audio {
 
 <div class="card">
 
-    <!-- TU LOGO -->
     <img src="logo.png" class="logo">
 
     <h1>Variadisima Stereo</h1>
@@ -101,7 +99,6 @@ audio {
 
     <div class="live" id="live">🎵 En vivo</div>
 
-    <!-- BOTÓN -->
     <button id="playBtn" class="btn play" onclick="toggleRadio()">
         ▶ Escuchar en vivo
     </button>
@@ -116,8 +113,9 @@ audio {
 
 </div>
 
+<!-- ✅ STREAM SEGURO -->
 <audio id="radio">
-    <source src="http://variadisima.wisemaradio.com:8000/radio.mp3" type="audio/mpeg">
+    <source src="https://variadisima.wisemaradio.com/listen/variadisima/radio.mp3" type="audio/mpeg">
 </audio>
 
 <script>
@@ -136,13 +134,13 @@ function toggleRadio() {
     }
 }
 
-// METADATA
+// METADATA HTTPS (CORRECTO)
 async function getMetadata() {
     try {
-        let res = await fetch("http://variadisima.wisemaradio.com:8000/status-json.xsl");
+        let res = await fetch("https://variadisima.wisemaradio.com/api/nowplaying/variadisima");
         let data = await res.json();
 
-        let song = data.icestats.source.title;
+        let song = data.now_playing.song.text;
 
         if (song && song.trim() !== "") {
             document.getElementById("live").innerText = "🎶 " + song;
